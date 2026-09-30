@@ -123,10 +123,11 @@ export default function RiskMap() {
             url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
           />
-          {blocks.filter(b => b.name.toLowerCase().includes(searchQuery.toLowerCase()) || b.panchayats.some(p => p.toLowerCase().includes(searchQuery.toLowerCase()))).map(block => {
+          {blocks.filter(b => b.name.toLowerCase().includes(searchQuery.toLowerCase()) || b.panchayats.some(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()))).map(block => {
             const forecast = forecasts.find(f => f.blockId === toSimpleId(block.id));
-            const hazardKey = selectedHazard === 'heavy' ? 'heavyRain' : selectedHazard;
-            const prob = forecast?.hazardProbabilities[hazardKey as any]?.[`week${effectiveWeek}` as any] ?? 50;
+            const hazardKey = selectedHazard as 'onset' | 'break' | 'heavy';
+            const weekKey = `week${effectiveWeek}` as 'week1' | 'week2' | 'week3' | 'week4';
+            const prob = forecast?.hazardProbabilities[hazardKey]?.[weekKey] ?? 50;
             const color = getRiskColor(prob);
             
             return (
@@ -230,7 +231,7 @@ export default function RiskMap() {
                 {[
                   { label: 'Onset', prob: blockForecast.hazardProbabilities.onset.week1, color: '#2dd4bf' },
                   { label: 'Break', prob: blockForecast.hazardProbabilities.break.week1, color: '#facc15' },
-                  { label: 'Heavy Rain', prob: blockForecast.hazardProbabilities.heavyRain.week1, color: '#60a5fa' }
+                  { label: 'Heavy Rain', prob: blockForecast.hazardProbabilities.heavy.week1, color: '#60a5fa' }
                 ].map(hazard => (
                   <div key={hazard.label} className="bg-gray-800/30 rounded-xl p-3 flex flex-col items-center relative">
                     <div className="h-16 w-16">
@@ -288,7 +289,7 @@ export default function RiskMap() {
                     <div className="w-2 h-2 rounded-full bg-red-500"></div>
                     Onset Threshold (30mm)
                   </div>
-                  <div className="text-white font-medium">Predicted: {blockForecast.predictedOnset}</div>
+                  <div className="text-white font-medium">Predicted: {blockForecast.onsetPrediction.startDate}</div>
                 </div>
               </div>
 
@@ -308,7 +309,7 @@ export default function RiskMap() {
                       <RTooltip 
                         cursor={{fill: '#374151', opacity: 0.4}}
                         contentStyle={{ backgroundColor: '#1f2937', border: 'none', borderRadius: '8px' }}
-                        formatter={(val: number) => [val > 0 ? `+${val.toFixed(2)}` : val.toFixed(2), 'Impact']}
+                        formatter={(val: any) => [Number(val) > 0 ? `+${Number(val).toFixed(2)}` : Number(val).toFixed(2), 'Impact']}
                       />
                       <Bar dataKey="value">
                         {generateShapData(blockDetails.id).map((entry, index) => (

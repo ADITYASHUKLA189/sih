@@ -28,10 +28,10 @@ const FarmerView: React.FC = () => {
   const heavyStatus = heavyProb > 60 ? 'Heavy rain expected. Ensure drainage.' : 'No heavy rain expected.';
 
   const weeklyOutlook = [
-    { condition: forecast?.hazardProbabilities?.heavy?.week1 > 50 ? 'Heavy Rain' : forecast?.hazardProbabilities?.onset?.week1 > 50 ? 'Rain' : 'Sunny' },
-    { condition: forecast?.hazardProbabilities?.heavy?.week2 > 50 ? 'Heavy Rain' : forecast?.hazardProbabilities?.onset?.week2 > 50 ? 'Rain' : 'Sunny' },
-    { condition: forecast?.hazardProbabilities?.heavy?.week3 > 50 ? 'Heavy Rain' : forecast?.hazardProbabilities?.onset?.week3 > 50 ? 'Rain' : 'Sunny' },
-    { condition: forecast?.hazardProbabilities?.heavy?.week4 > 50 ? 'Heavy Rain' : forecast?.hazardProbabilities?.onset?.week4 > 50 ? 'Rain' : 'Sunny' }
+    { condition: (forecast?.hazardProbabilities?.heavy?.week1 ?? 0) > 50 ? 'Heavy Rain' : (forecast?.hazardProbabilities?.onset?.week1 ?? 0) > 50 ? 'Rain' : 'Sunny' },
+    { condition: (forecast?.hazardProbabilities?.heavy?.week2 ?? 0) > 50 ? 'Heavy Rain' : (forecast?.hazardProbabilities?.onset?.week2 ?? 0) > 50 ? 'Rain' : 'Sunny' },
+    { condition: (forecast?.hazardProbabilities?.heavy?.week3 ?? 0) > 50 ? 'Heavy Rain' : (forecast?.hazardProbabilities?.onset?.week3 ?? 0) > 50 ? 'Rain' : 'Sunny' },
+    { condition: (forecast?.hazardProbabilities?.heavy?.week4 ?? 0) > 50 ? 'Heavy Rain' : (forecast?.hazardProbabilities?.onset?.week4 ?? 0) > 50 ? 'Rain' : 'Sunny' }
   ];
 
   useEffect(() => {
@@ -150,7 +150,7 @@ const FarmerView: React.FC = () => {
           {forecast ? (
             <>
               {/* Risk Cards */}
-              <motion.div variants={itemVariants} className="glass rounded-2xl p-5 border-l-4" style={{ borderColor: getRiskColor(onsetRiskLevel) }}>
+              <motion.div variants={itemVariants} className="glass rounded-2xl p-5 border-l-4" style={{ borderColor: getRiskColor(onsetProb) }}>
                 <div className="flex justify-between items-start mb-2">
                   <h3 className="text-lg font-semibold flex items-center gap-2">
                     <CloudRain className="text-blue-400" />
@@ -158,7 +158,7 @@ const FarmerView: React.FC = () => {
                   </h3>
                   <span 
                     className="px-3 py-1 rounded-full text-xs font-bold"
-                    style={{ backgroundColor: `${getRiskColor(onsetRiskLevel)}20`, color: getRiskColor(onsetRiskLevel) }}
+                    style={{ backgroundColor: `${getRiskColor(onsetProb)}20`, color: getRiskColor(onsetProb) }}
                   >
                     {onsetRiskLevel}
                   </span>
@@ -167,7 +167,7 @@ const FarmerView: React.FC = () => {
                 <p className="text-gray-300 mt-2 text-sm">{onsetStatus}</p>
               </motion.div>
 
-              <motion.div variants={itemVariants} className="glass rounded-2xl p-5 border-l-4" style={{ borderColor: getRiskColor(breakRiskLevel) }}>
+              <motion.div variants={itemVariants} className="glass rounded-2xl p-5 border-l-4" style={{ borderColor: getRiskColor(breakProb) }}>
                 <div className="flex justify-between items-start mb-2">
                   <h3 className="text-lg font-semibold flex items-center gap-2">
                     <CloudOff className="text-orange-400" />
@@ -175,7 +175,7 @@ const FarmerView: React.FC = () => {
                   </h3>
                   <span 
                     className="px-3 py-1 rounded-full text-xs font-bold"
-                    style={{ backgroundColor: `${getRiskColor(breakRiskLevel)}20`, color: getRiskColor(breakRiskLevel) }}
+                    style={{ backgroundColor: `${getRiskColor(breakProb)}20`, color: getRiskColor(breakProb) }}
                   >
                     {breakRiskLevel}
                   </span>
@@ -184,7 +184,7 @@ const FarmerView: React.FC = () => {
                 <p className="text-gray-300 mt-2 text-sm">{breakStatus}</p>
               </motion.div>
 
-              <motion.div variants={itemVariants} className="glass rounded-2xl p-5 border-l-4" style={{ borderColor: getRiskColor(heavyRiskLevel) }}>
+              <motion.div variants={itemVariants} className="glass rounded-2xl p-5 border-l-4" style={{ borderColor: getRiskColor(heavyProb) }}>
                 <div className="flex justify-between items-start mb-2">
                   <h3 className="text-lg font-semibold flex items-center gap-2">
                     <AlertTriangle className="text-red-400" />
@@ -192,7 +192,7 @@ const FarmerView: React.FC = () => {
                   </h3>
                   <span 
                     className="px-3 py-1 rounded-full text-xs font-bold"
-                    style={{ backgroundColor: `${getRiskColor(heavyRiskLevel)}20`, color: getRiskColor(heavyRiskLevel) }}
+                    style={{ backgroundColor: `${getRiskColor(heavyProb)}20`, color: getRiskColor(heavyProb) }}
                   >
                     {heavyRiskLevel}
                   </span>

@@ -21,12 +21,9 @@ export default function OfficerDashboard() {
   const tableData = useMemo(() => {
     return blocks.map(block => {
       const forecast = forecasts.find(f => f.blockId === toSimpleId(block.id));
-      const w1 = forecast?.weeks[0];
-      const w2 = forecast?.weeks[1];
-      
-      const onset = w1?.onset_prob || 0;
-      const breakProb = w2?.break_prob || 0;
-      const heavy = w2?.heavy_prob || 0;
+      const onset = forecast?.hazardProbabilities?.onset?.week1 || 0;
+      const breakProb = forecast?.hazardProbabilities?.break?.week2 || 0;
+      const heavy = forecast?.hazardProbabilities?.heavy?.week2 || 0;
       
       let riskLevel = 'Low Risk';
       if (onset < 40 || breakProb > 55 || heavy > 50) {
