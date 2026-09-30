@@ -35,7 +35,7 @@ export default function RiskMap() {
   const [currentDay, setCurrentDay] = useState(1);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: number | ReturnType<typeof setTimeout>;
     if (isPlaying) {
       interval = setInterval(() => {
         setCurrentDay((prev) => (prev >= 30 ? 1 : prev + 1));
