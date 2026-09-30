@@ -166,7 +166,7 @@ const rules: Rule[] = [
       title: 'Drought Risk — Switch Maize Variety',
       ruleTrace: `IF break_prob(W2) = ${risk.breakW2}% (> 50%) AND crop = Maize AND irrigation = No THEN SWITCH_VARIETY`,
       actions: [
-        'Switch to short-duration drought-tolerant maize variety',
+        'Switch to OUAT Kalinga Maize 1 (Khushi) which is highly drought-tolerant',
         'If crop already sown, apply anti-transpirant spray (Kaolin 6%)',
         'Maintain soil moisture through straw mulch (5 tonnes/ha)',
         'Plan for intercropping with drought-tolerant legumes',
@@ -423,3 +423,5 @@ export function generateAdvisory(input: AdvisoryInput): AdvisoryOutput {
     weeklyOutlook: `Current conditions are within normal range. No extreme weather event predicted in the next 2 weeks. Regular monsoon activity expected.`,
   };
 }
+
+
